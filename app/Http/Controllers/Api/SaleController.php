@@ -354,4 +354,26 @@ class SaleController extends Controller
 
         return response()->json($data);
     }
+
+    // Méthode alternative pour les statistiques quotidiennes des ventes
+    public function dailyStatistics(Request $request)
+    {
+        $days = (int) $request->query('days', 7);
+        $startDate = Carbon::now()->subDays($days);
+
+        $data = Sale::select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(total_amount) as total')
+            )
+            ->where('created_at', '>=', $startDate)
+            ->whereNull('deleted_at')   // important si soft delete actif
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 }

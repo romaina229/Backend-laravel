@@ -51,6 +51,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/sales/statistics/summary', [SaleController::class, 'statistics']);
         Route::get('/sales/{sale}/details', [SaleController::class, 'getDetails']);
         Route::get('/sales/ventes', [SaleController::class, 'ventesParJour']);
+        Route::get('/sales/statistics/daily', [SaleController::class, 'dailyStatistics']);
+        Route::get('/sales/statistics/monthly', [SaleController::class, 'monthlyStatistics']);
+        Route::get('/sales/statistics/yearly', [SaleController::class, 'yearlyStatistics']);
+        Route::get('/sales/statistics/top-products', [SaleController::class, 'topSellingProducts']);
+        
 
         // Clients
         Route::apiResource('clients', ClientController::class);
