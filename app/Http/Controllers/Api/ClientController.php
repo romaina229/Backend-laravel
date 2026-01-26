@@ -207,7 +207,7 @@ class ClientController extends Controller
         return response()->json([
             'success' => true,
             'data' => $stats,
-            'message' => 'Statistiques clients récupérées'
+            'message' => 'Statistiques clients récupérées avec succès'
         ]);
     }
 
@@ -219,6 +219,13 @@ class ClientController extends Controller
                 'active_clients' => Client::where('status', 'active')->count(),
                 'inactive_clients' => Client::where('status', 'inactive')->count(),
                 'new_clients_this_month' => Client::whereMonth('created_at', now()->month)->count(),
+                //nouveaux indicateurs
+                'clients_with_sales' => Client::has('sales')->count(),
+                'clients_without_sales' => Client::doesntHave('sales')->count(),
+                'recent_clients' => Client::orderBy('created_at', 'desc')->limit(5)->get(),
+                'clients_active_this_month' => Client::where('status', 'active')
+                    ->whereMonth('created_at', now()->month)
+                    ->count(),
             ]
         ]);
     }

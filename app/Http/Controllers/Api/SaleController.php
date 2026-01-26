@@ -19,17 +19,6 @@ class SaleController extends Controller
     {
         $query = Sale::with(['user', 'client', 'details.product']);
 
-        // Requête optimisée avec jointure pour récupérer le nom du client (évite N+1)
-        $query = Sale::leftJoin('clients', 'clients.id', '=', 'sales.client_id')
-             ->select(
-                 'sales.id',
-                 'sales.reference',
-                 DB::raw('COALESCE(clients.name, "Non renseigné") as client_name'),
-                 DB::raw('CAST(sales.total_amount AS DECIMAL(10,2)) as total_amount'),
-                 'sales.created_at'
-             );
-
-
         // Filtres
         if ($request->has('search') && $request->search) {
             $search = $request->search;
