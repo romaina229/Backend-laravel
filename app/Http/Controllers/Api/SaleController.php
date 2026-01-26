@@ -19,6 +19,17 @@ class SaleController extends Controller
     {
         $query = Sale::with(['user', 'client', 'details.product']);
 
+        // Requête optimisée avec jointure pour récupérer le nom du client (évite N+1)
+        $query = Sale::leftJoin('clients', 'clients.id', '=', 'sales.client_id')
+             ->select(
+                 'sales.id',
+                 'sales.reference',
+                 DB::raw('COALESCE(clients.name, "Non renseigné") as client_name'),
+                 DB::raw('CAST(sales.total_amount AS DECIMAL(10,2)) as total_amount'),
+                 'sales.created_at'
+             );
+
+
         // Filtres
         if ($request->has('search') && $request->search) {
             $search = $request->search;
@@ -327,6 +338,12 @@ class SaleController extends Controller
             'data' => [
                 'total_sales' => $totalSales,
                 'total_revenue' => $totalRevenue,
+                'today_sales' => $query->whereDate('created_at', today())->count(),
+                'today_revenue' => $query->whereDate('created_at', today())->sum('total_amount'),
+                'total_products' => Product::count(),
+                'clients_count' => Client::count(),
+                'clients_name' => Client::pluck('name'),
+                'client_actives' => Client::whereHas('sales')->count(),
                 'avg_ticket' => $avgTicket,
                 'payment_methods' => $paymentMethods,
                 'top_products' => $topProducts
@@ -376,4 +393,14 @@ class SaleController extends Controller
             'data' => $data
         ]);
     }
+    public function dashboardStats()
+    {
+        $dashboardStats = [
+            'today_sales' => DB::table('sales')->whereDate('created_at', now())->sum('amount'),
+            'total_sales' => DB::table('sales')->sum('amount'),
+        ];
+
+        return response()->json($dashboardStats);
+    }
+    
 }

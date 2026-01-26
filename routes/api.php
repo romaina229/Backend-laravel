@@ -35,6 +35,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/dashboard/top-products', [DashboardController::class, 'topProducts']);
         Route::get('/dashboard/recent-sales', [DashboardController::class, 'recentSales']);
         Route::get('/dashboard/low-stock', [DashboardController::class, 'lowStock']);
+        Route::get('/dashboard/sales-trends', [DashboardController::class, 'salesTrends']);
+        Route::get('/dashboard/client-activities', [DashboardController::class, 'clientActivities']);
+        Route::get('/dashboard/supplier-activities', [DashboardController::class, 'supplierActivities']);
+        Route::get('/dashboard/inventory-summary', [DashboardController::class, 'inventorySummary']);
+        Route::get('/dashboard/mobile-transactions', [DashboardController::class, 'mobileTransactions']);
+        Route::get('/dashboard/invoice-overview', [DashboardController::class, 'invoiceOverview']);
+        
 
         // Produits
         Route::apiResource('products', ProductController::class);
@@ -55,7 +62,9 @@ Route::prefix('v1')->group(function () {
         Route::get('/sales/statistics/monthly', [SaleController::class, 'monthlyStatistics']);
         Route::get('/sales/statistics/yearly', [SaleController::class, 'yearlyStatistics']);
         Route::get('/sales/statistics/top-products', [SaleController::class, 'topSellingProducts']);
-        
+        Route::get('/sales/statistics/dashboard', [SaleController::class, 'dashboardStats']);
+
+
 
         // Clients
         Route::apiResource('clients', ClientController::class);
