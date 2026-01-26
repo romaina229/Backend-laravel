@@ -334,4 +334,24 @@ class SaleController extends Controller
             'message' => 'Statistiques récupérées avec succès'
         ]);
     }
+
+    // Nouvelle méthode pour les ventes par jour affiche graphique
+    public function ventesParJour(Request $request)
+    {
+        $days = (int) $request->query('days', 7);
+
+        $startDate = Carbon::now()->subDays($days);
+
+        $data = DB::table('ventes')
+            ->select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('SUM(montant) as total')
+            )
+            ->where('created_at', '>=', $startDate)
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return response()->json($data);
+    }
 }

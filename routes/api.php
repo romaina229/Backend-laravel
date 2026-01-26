@@ -50,6 +50,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/sales/{sale}/invoice', [SaleController::class, 'generateInvoice']); 
         Route::get('/sales/statistics/summary', [SaleController::class, 'statistics']);
         Route::get('/sales/{sale}/details', [SaleController::class, 'getDetails']);
+        Route::get('/sales/ventes', [SaleController::class, 'ventesParJour']);
 
         // Clients
         Route::apiResource('clients', ClientController::class);
