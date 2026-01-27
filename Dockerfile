@@ -29,6 +29,11 @@ COPY . .
 # Installer les dépendances PHP
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
+# Installer l'extension PostgreSQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql pgsql
+
 # Configurer les permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
