@@ -391,5 +391,27 @@ class SaleController extends Controller
 
         return response()->json($dashboardStats);
     }
-    
+
+    // Méthode pour récupérer les ventes récentes
+    public function recentSales()
+    {
+        $sales = DB::table('sales')
+            ->leftJoin('clients', 'clients.id', '=', 'sales.client_id')
+            ->select(
+                'sales.id',
+                'sales.reference',
+                DB::raw('COALESCE(clients.name, "Non renseigné") as client_name'),
+                DB::raw('CAST(sales.total_amount AS DECIMAL(10,2)) as total_amount'),
+                'sales.created_at'
+            )
+            ->orderBy('sales.created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $sales,
+            'message' => 'Ventes récentes récupérées avec succès'
+        ]);
+    }
 }

@@ -63,6 +63,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/sales/statistics/yearly', [SaleController::class, 'yearlyStatistics']);
         Route::get('/sales/statistics/top-products', [SaleController::class, 'topSellingProducts']);
         Route::get('/sales/statistics/dashboard', [SaleController::class, 'dashboardStats']);
+        Route::get('/sales/recent', [SaleController::class, 'recentSales']);
 
 
 
