@@ -14,8 +14,6 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
-    nodejs \
-    npm \
     netcat-traditional \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -30,9 +28,6 @@ COPY . .
 
 # Installer les dépendances PHP
 RUN composer install --optimize-autoloader --no-dev --no-interaction
-
-# Installer les dépendances Node.js et build
-RUN npm install && npm run build
 
 # Configurer les permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
