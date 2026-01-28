@@ -18,10 +18,9 @@ return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
     'allowed_origins' => ['http://localhost:3000'],
-    'allowed_origins_patterns' => ['allowed_origins' => [
+    'allowed_origins' => [
     'https://aquagestion-frontend.onrender.com',
-    'http://localhost:3000', // Pour le dev
-    ],],
+    'http://localhost:3000',],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,
