@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://aquagestionpossonnerie.onrender.com',
+        'https://aquagestion.vercel.app',
     ],
 
     'allowed_headers' => ['*'],
