@@ -23,6 +23,7 @@ fi
 # Exécuter les migrations
 echo "Running migrations..."
 php artisan migrate --force
+php artisan db:seed
 
 # Nettoyer et optimiser le cache
 echo "Optimizing application..."
